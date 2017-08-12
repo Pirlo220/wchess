@@ -18,3 +18,15 @@ input {
     border: 1px solid black;
     color: darkgray;
 }
+
+.btn-wchess{
+    
+    background-color: darkolivegreen !important;
+    color: white;
+    border-color: darkslategray !important;
+}
+
+.btn-wchess:hover{
+    background-color: darkslategray !important;
+    cursor: pointer;
+}
