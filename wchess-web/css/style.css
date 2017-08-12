@@ -1,0 +1,20 @@
+h4{   font-size: 26px;
+    font-family: monospace;
+    font-weight: bolder;
+}
+
+.well {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;    
+    border: 1px solid black;
+    border-radius: 4px;    
+}
+
+input {
+    width: 100%; 
+    padding: 5px; 
+    border-color: black; 
+    border: 1px solid black;
+    color: darkgray;
+}
