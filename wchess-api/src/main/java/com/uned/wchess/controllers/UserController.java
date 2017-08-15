@@ -14,7 +14,7 @@ import com.uned.wchess.models.User;
 import com.uned.wchess.search.UserSearchModel;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
 	@RequestMapping(value="{userId}", method=RequestMethod.GET)
@@ -29,15 +29,8 @@ public class UserController {
 		List<User> users = new ArrayList<User>();
 		
 		return ResponseEntity.ok(users);
-	}
-	/*
-	@RequestMapping(path="/user/", method=RequestMethod.GET)
-	public ResponseEntity<List<User>> getUsersByCriteria(@RequestBody UserSearchModel searchModel){
-		List<User> users = new ArrayList<User>();
+	}	
 		
-		return ResponseEntity.ok(users);
-	}
-	*/
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<User> save(@RequestBody User user){
 		User createdUser = new User();
