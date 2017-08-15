@@ -28,28 +28,31 @@
       </div>
       <div class="row">
         <div class="col">
-          1 of 3
+          <pre id="results"></pre>
         </div>
         <div class="col">
-          2 of 3
+          <button id="api">Call API</button>
+          <button id="logout">Logout</button>
         </div>
         <div id="login" class="col span3 well well-large offset4">
         <h4>WChess</h4>
         <form class="form">
-          <div><input type="text" placeholder="Email o Usuario" ></div>
-          <div style="margin-top: 15px;"><input type="password" placeholder="Contraseña" ></div>
+          <div><input type="text" placeholder="Email o Usuario" id="login-username"></div>
+          <div style="margin-top: 15px;"><input type="password" placeholder="Contraseña" id="login-password"></div>
 
           <div style="margin-top: 30px;">
-            <input class="btn btn-success btn-wchess" type="button" value="Inicia Sesión" > 
+            <input id="login-button" class="btn btn-success btn-wchess" type="button" value="Inicia Sesión" >
             <div style="text-align: center"><a class="btn" href="#">Regístrate</a></div>                                                                                      
           </div>
         </form>
         </div>
       </div>
     </div>
+	<textarea rows="4" cols="50" id="console"></textarea>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" crossorigin="anonymous"></script>
- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script> 
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
  
+ <script src="js/app.js"></script>
 </body>
 </html>
