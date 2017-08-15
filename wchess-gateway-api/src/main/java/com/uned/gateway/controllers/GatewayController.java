@@ -3,6 +3,7 @@ package com.uned.gateway.controllers;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,19 +24,22 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
-import net.chrisrichardson.eventstore.javaexamples.banking.apigateway.ApiGatewayProperties;
-import net.chrisrichardson.eventstore.javaexamples.banking.apigateway.utils.ContentRequestTransformer;
-import net.chrisrichardson.eventstore.javaexamples.banking.apigateway.utils.HeadersRequestTransformer;
-import net.chrisrichardson.eventstore.javaexamples.banking.apigateway.utils.URLRequestTransformer;
+import com.uned.gateway.ApiGatewayProperties;
+import com.uned.gateway.utils.ContentRequestTransformer;
+import com.uned.gateway.utils.HeadersRequestTransformer;
+import com.uned.gateway.utils.URLRequestTransformer;
 
+@Configuration
 @RestController
 public class GatewayController {
 
@@ -55,9 +59,9 @@ public class GatewayController {
             .build();
   }
 
-  @RequestMapping(value = "/api/**", method = {GET, POST, DELETE})
+  @RequestMapping(value = "/api/**", method = {GET, PUT, POST, DELETE})
   @ResponseBody
-  public ResponseEntity<String> proxyRequest(HttpServletRequest request) throws NoSuchRequestHandlingMethodException, IOException, URISyntaxException {
+  public ResponseEntity<String> proxyRequest(HttpServletRequest request) throws NoHandlerFoundException, IOException, URISyntaxException, NoSuchRequestHandlingMethodException {
     HttpUriRequest proxiedRequest = createHttpUriRequest(request);
     logger.info("request: {}", proxiedRequest);
     HttpResponse proxiedResponse = httpClient.execute(proxiedRequest);

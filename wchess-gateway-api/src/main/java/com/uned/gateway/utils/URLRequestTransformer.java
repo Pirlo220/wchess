@@ -1,9 +1,11 @@
 package com.uned.gateway.utils;
 
-import net.chrisrichardson.eventstore.javaexamples.banking.apigateway.ApiGatewayProperties;
+
 import org.apache.http.client.methods.RequestBuilder;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+
+import com.uned.gateway.ApiGatewayProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
