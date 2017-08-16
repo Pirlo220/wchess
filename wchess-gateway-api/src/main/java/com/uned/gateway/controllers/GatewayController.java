@@ -51,9 +51,10 @@ public class GatewayController {
 
 	@Autowired
 	private ApiGatewayProperties apiGatewayProperties;
-
-	private HttpClient httpClient;
+	@Autowired
 	private DecisionPointService decisionPointService;
+	
+	private HttpClient httpClient;	
 
 	@PostConstruct
 	public void init() {
@@ -117,7 +118,7 @@ public class GatewayController {
 		throw e;
 	}
 
-	private String extraerToken(String authorizationHeader) {
+	private String extraerToken(String authorizationHeader) {		
 		if (authorizationHeader.startsWith("Bearer ")) {
 			return authorizationHeader.substring(7);
 		} else {
