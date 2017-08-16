@@ -73,7 +73,7 @@ public class GatewayController {
     	HttpResponse proxiedResponse = httpClient.execute(proxiedRequest);
     	logger.info("Response {}", proxiedResponse.getStatusLine().getStatusCode());
     } else {
-    	// Throw NotAllowedException
+    	// Throw corresponding Exception
     }
     return new ResponseEntity<>(read(proxiedResponse.getEntity().getContent()), makeResponseHeaders(proxiedResponse), HttpStatus.valueOf(proxiedResponse.getStatusLine().getStatusCode()));
   }
@@ -100,7 +100,7 @@ public class GatewayController {
       return buffer.lines().collect(Collectors.joining("\n"));
     }
   }
-  /*
+  
   @ExceptionHandler
   @ResponseStatus(HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {
@@ -117,5 +117,5 @@ public class GatewayController {
 		error.setMensaje(e.getMessage());
 		return new ResponseEntity<ErrorAPI>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-  */
+  
 }
