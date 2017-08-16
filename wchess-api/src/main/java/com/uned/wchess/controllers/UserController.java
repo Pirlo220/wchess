@@ -27,7 +27,10 @@ public class UserController {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<User>> getAll(){
 		List<User> users = new ArrayList<User>();
-		
+		User user = new User();
+		user.setId(1L);
+		user.setName("Test");
+		users.add(user);
 		return ResponseEntity.ok(users);
 	}	
 		
