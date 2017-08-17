@@ -15,31 +15,39 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uned.gateway.controllers.GatewayInterceptor;
 
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
 
-@EnableConfigurationProperties({ApiGatewayProperties.class})
+@EnableConfigurationProperties({ ApiGatewayProperties.class })
 public class ApiGatewayServiceConfiguration extends WebMvcConfigurerAdapter {
 
-  @Bean
-  public RestTemplate restTemplate(HttpMessageConverters converters) {
+	@Bean
+	public RestTemplate restTemplate(HttpMessageConverters converters) {
 
-    // we have to define Apache HTTP client to use the PATCH verb
-    MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-    converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/json"));
-    converter.setObjectMapper(new ObjectMapper());
+		// we have to define Apache HTTP client to use the PATCH verb
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/json"));
+		converter.setObjectMapper(new ObjectMapper());
 
-    HttpClient httpClient = HttpClients.createDefault();
-    RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
-    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
+		HttpClient httpClient = HttpClients.createDefault();
+		RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
 
-    restTemplate.setErrorHandler(new RestTemplateErrorHandler());
+		restTemplate.setErrorHandler(new RestTemplateErrorHandler());
 
-    return restTemplate;
-  }
+		return restTemplate;
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new GatewayInterceptor()).addPathPatterns("/api/users");
+	}
+
 }

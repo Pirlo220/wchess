@@ -65,26 +65,20 @@ public class GatewayController {
 
 	@RequestMapping(value = "/api/**", method = { GET, PUT, POST, DELETE })
 	@ResponseBody
-	public ResponseEntity<String> proxyRequest(
-			@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader,
-			HttpServletRequest request) throws NoHandlerFoundException,
-			IOException, URISyntaxException,
-			NoSuchRequestHandlingMethodException {
+	public ResponseEntity<String> proxyRequest(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader,	HttpServletRequest request) throws NoHandlerFoundException,	IOException, URISyntaxException, NoSuchRequestHandlingMethodException {
 		HttpUriRequest proxiedRequest = createHttpUriRequest(request);
 		logger.info("request: {}", proxiedRequest);
 		String tokenUUID = extraerToken(authorizationHeader);
 		HttpResponse proxiedResponse = null;
 		if (decisionPointService.isAccepted(tokenUUID, request)) {
 			proxiedResponse = httpClient.execute(proxiedRequest);
-			logger.info("Response {}", proxiedResponse.getStatusLine()
-					.getStatusCode());
+			logger.info("Response {}", proxiedResponse.getStatusLine().getStatusCode());
 		} else {
 			// Throw corresponding Exception
 		}
-		return new ResponseEntity<>(read(proxiedResponse.getEntity()
-				.getContent()), makeResponseHeaders(proxiedResponse),
-				HttpStatus.valueOf(proxiedResponse.getStatusLine()
-						.getStatusCode()));
+		return new ResponseEntity<>(read(proxiedResponse.getEntity().getContent()), 
+				makeResponseHeaders(proxiedResponse), 
+				HttpStatus.valueOf(proxiedResponse.getStatusLine().getStatusCode()));
 	}
 
 	private HttpHeaders makeResponseHeaders(HttpResponse response) {
