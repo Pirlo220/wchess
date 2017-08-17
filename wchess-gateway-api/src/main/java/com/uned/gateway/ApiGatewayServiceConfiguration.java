@@ -7,6 +7,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -50,4 +51,13 @@ public class ApiGatewayServiceConfiguration extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new GatewayInterceptor()).addPathPatterns("/api/**");
 	}
 
+	@Bean
+    public FilterRegistrationBean greetingFilterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setName("greeting");
+        CSPPoliciesApplier greetingFilter = new CSPPoliciesApplier();
+        registrationBean.setFilter(greetingFilter);
+        registrationBean.setOrder(1);
+        return registrationBean;
+    }
 }
