@@ -47,7 +47,7 @@ public class ApiGatewayServiceConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new GatewayInterceptor()).addPathPatterns("/api/users");
+		registry.addInterceptor(new GatewayInterceptor()).addPathPatterns("/api/**");
 	}
 
 }
