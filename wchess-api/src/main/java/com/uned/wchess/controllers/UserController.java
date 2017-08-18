@@ -38,6 +38,10 @@ public class UserController {
 	public ResponseEntity<User> save(@RequestBody User user){
 		User createdUser = new User();
 		
+		createdUser.setId(2L);
+		createdUser.setName("New User");
+		
+		
 		return ResponseEntity.ok(createdUser);
 	}
 	
