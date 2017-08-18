@@ -35,19 +35,21 @@ public class AuditorDispatcherServlet extends DispatcherServlet {
 
 	private void auditMessage(HttpServletRequest requestToCache, HttpServletResponse responseToCache,
 			HandlerExecutionChain handler) throws IOException {
-		final StringBuilder logMessage = new StringBuilder("REST RESPONSE - ").append("[HTTP METHOD:")
-				.append(requestToCache.getMethod()).append("] [PATH INFO:").append(requestToCache.getPathInfo())
-				.append("] [RESPONSE PARAMETERS:").append(requestToCache.getQueryString()).append("] [RESPONSE BODY:")
-				.append(getResponsePayload(responseToCache)).append("] [REMOTE ADDRESS:")
-				.append(requestToCache.getRemoteAddr()).append("]");
-
-		final StringBuilder logMessageRequest = new StringBuilder("REST REQUEST - ").append("[HTTP METHOD:")
-				.append(requestToCache.getMethod()).append("] [PATH INFO:").append(requestToCache.getPathInfo())
-				.append("] [REQUEST PARAMETERS:").append(requestToCache.getParameterMap().values())
-				.append("] [REQUEST BODY:").append(getRequestPayload(requestToCache)).append("] [REMOTE ADDRESS:")
-				.append(requestToCache.getRemoteAddr()).append("]");
-		System.out.println(logMessageRequest);
-		System.out.println(logMessage);
+		if(!requestToCache.getMethod().equals("OPTIONS")) {
+			final StringBuilder logMessage = new StringBuilder("REST RESPONSE - ").append("[HTTP METHOD:")
+					.append(requestToCache.getMethod()).append("] [PATH INFO:").append(requestToCache.getPathInfo())
+					.append("] [RESPONSE PARAMETERS:").append(requestToCache.getQueryString()).append("] [RESPONSE BODY:")
+					.append(getResponsePayload(responseToCache)).append("] [REMOTE ADDRESS:")
+					.append(requestToCache.getRemoteAddr()).append("]");
+	
+			final StringBuilder logMessageRequest = new StringBuilder("REST REQUEST - ").append("[HTTP METHOD:")
+					.append(requestToCache.getMethod()).append("] [PATH INFO:").append(requestToCache.getPathInfo())
+					.append("] [REQUEST PARAMETERS:").append(requestToCache.getParameterMap().values())
+					.append("] [REQUEST BODY:").append(getRequestPayload(requestToCache)).append("] [REMOTE ADDRESS:")
+					.append(requestToCache.getRemoteAddr()).append("]");
+			System.out.println(logMessageRequest);
+			System.out.println(logMessage);
+		}
 	}
 
 	private String getResponsePayload(HttpServletResponse response) {
