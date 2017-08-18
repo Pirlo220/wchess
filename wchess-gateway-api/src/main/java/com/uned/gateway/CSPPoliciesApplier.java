@@ -1,23 +1,42 @@
 package com.uned.gateway;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.WriteListener;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.output.TeeOutputStream;
 import org.springframework.stereotype.Component;
 
 /**
@@ -128,11 +147,11 @@ public class CSPPoliciesApplier implements Filter {
 		HttpServletRequest httpRequest = ((HttpServletRequest) request);
 		HttpServletResponse httpResponse = ((HttpServletResponse) response);
 
-		/* Step 1 : Detect if target resource is a Frame */
+		 //Step 1 : Detect if target resource is a Frame 
 		// Customize here according to your context...
 		boolean isFrame = true;
 
-		/* Step 2 : Add CSP policies to HTTP response */
+		//Step 2 : Add CSP policies to HTTP response 
 		StringBuilder policiesBuffer = new StringBuilder(this.policies);
 
 		// If resource is a frame add Frame/Sandbox CSP policy
@@ -167,9 +186,24 @@ public class CSPPoliciesApplier implements Filter {
 			httpResponse.setHeader(header, policiesBuffer.toString());
 		}
 
-		/* Step 3 : Let request continue chain filter */
-		fchain.doFilter(request, response);
+		// Step 3 : Let request continue chain filter 
+		fchain.doFilter(request, response);		
 	}
+	private Map<String, String> getTypesafeRequestMap(HttpServletRequest request) {
+        Map<String, String> typesafeRequestMap = new HashMap<String, String>();
+        Enumeration<?> requestParamNames = request.getParameterNames();
+        while (requestParamNames.hasMoreElements()) {
+            String requestParamName = (String) requestParamNames.nextElement();
+            String requestParamValue;
+            if (requestParamName.equalsIgnoreCase("password")) {
+                requestParamValue = "********";
+            } else {
+                requestParamValue = request.getParameter(requestParamName);
+            }
+            typesafeRequestMap.put(requestParamName, requestParamValue);
+        }
+        return typesafeRequestMap;
+    }
 
 	/**
 	 * {@inheritDoc}
@@ -180,4 +214,5 @@ public class CSPPoliciesApplier implements Filter {
 	public void destroy() {
 		// Not used
 	}
+
 }
