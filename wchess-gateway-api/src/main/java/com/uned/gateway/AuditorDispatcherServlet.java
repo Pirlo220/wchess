@@ -2,6 +2,7 @@ package com.uned.gateway;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,7 +71,6 @@ public class AuditorDispatcherServlet extends DispatcherServlet {
 	private String getRequestPayload(HttpServletRequest request) {
 		ContentCachingRequestWrapper wrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
 		if (wrapper != null) {
-
 			byte[] buf = wrapper.getContentAsByteArray();
 			if (buf.length > 0) {
 				int length = Math.min(buf.length, 5120);

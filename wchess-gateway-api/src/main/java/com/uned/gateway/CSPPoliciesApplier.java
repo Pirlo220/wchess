@@ -189,22 +189,7 @@ public class CSPPoliciesApplier implements Filter {
 		// Step 3 : Let request continue chain filter 
 		fchain.doFilter(request, response);		
 	}
-	private Map<String, String> getTypesafeRequestMap(HttpServletRequest request) {
-        Map<String, String> typesafeRequestMap = new HashMap<String, String>();
-        Enumeration<?> requestParamNames = request.getParameterNames();
-        while (requestParamNames.hasMoreElements()) {
-            String requestParamName = (String) requestParamNames.nextElement();
-            String requestParamValue;
-            if (requestParamName.equalsIgnoreCase("password")) {
-                requestParamValue = "********";
-            } else {
-                requestParamValue = request.getParameter(requestParamName);
-            }
-            typesafeRequestMap.put(requestParamName, requestParamValue);
-        }
-        return typesafeRequestMap;
-    }
-
+	
 	/**
 	 * {@inheritDoc}
 	 * 
