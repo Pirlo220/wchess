@@ -94,8 +94,9 @@ public class GatewayController {
 		HeadersRequestTransformer headersRequestTransformer = new HeadersRequestTransformer();
 		headersRequestTransformer.setPredecessor(contentRequestTransformer);
 		contentRequestTransformer.setPredecessor(urlRequestTransformer);
-
-		return headersRequestTransformer.transform(request).build();
+		HttpUriRequest u = headersRequestTransformer.transform(request).build();
+		u.setHeader("Authorization",request.getHeader("Authorization"));
+		return u;
 	}
 
 	private String read(InputStream input) throws IOException {
