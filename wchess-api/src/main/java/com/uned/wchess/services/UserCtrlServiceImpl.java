@@ -37,7 +37,8 @@ public class UserCtrlServiceImpl implements UserCtrlService {
 	@Override
 	public User save(String tokenUUID, User user) {
 		User userCreated = new User();
-		if (isValidUser(user)) {
+		Boolean validatePassw = true;
+		if (isValidUserData(user, validatePassw)) {
 			//usersService.save(user);
 		}
 		return user;
@@ -55,11 +56,13 @@ public class UserCtrlServiceImpl implements UserCtrlService {
 
 	}
 
-	private Boolean isValidUser(User user) {
+	private Boolean isValidUserData(User user, Boolean validatePassword) {
 		Boolean isValid = true;
 		isValidEmail(user.getEmail());
 		isValidUserName(user.getUsername());
-		isValidPassword(user.getPassword());
+		if(validatePassword) {
+			isValidPassword(user.getPassword());
+		}
 		return isValid;
 	}
 
