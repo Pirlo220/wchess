@@ -74,6 +74,7 @@ public class CorsFilter implements Filter {
 		CacheManager.getInstance().addCache(this.blackListedClientIPCache);
 		// Load domains allowed white list (hard coded here only for example)
 		this.allowedDomains.add("http://localhost");		
+		this.allowedDomains.add("http://localhost:8080");	
 	}
 
 	/**
