@@ -6,6 +6,7 @@ public class User {
 	private String email;
 	private String name;
 	private String surname;
+	private String password;
 	
 	public User() {
 		this.id = -1;
@@ -41,9 +42,14 @@ public class User {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", email=" + email + ", name=" + name + ", surname="
-				+ surname + "]";
-	}	
+		return "User [id=" + id + "]";
+	}		
 }

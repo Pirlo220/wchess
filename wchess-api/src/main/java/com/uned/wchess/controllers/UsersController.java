@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,15 @@ import com.uned.wchess.api.ErrorAPI;
 import com.uned.wchess.exceptions.AccesoNoAutorizadoException;
 import com.uned.wchess.exceptions.AuthorizationHeaderException;
 import com.uned.wchess.models.User;
+import com.uned.wchess.services.UserCtrlService;
 
 @RestController
 @RequestMapping("/api/users")
 public class UsersController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsersController.class);
 	private HttpHeaders errorHeaders;
+	@Autowired
+	private UserCtrlService userCtrlService;
 	
 	public UsersController() {
 		errorHeaders = new HttpHeaders();
@@ -38,7 +42,14 @@ public class UsersController {
 	@RequestMapping(value="{userId}", method=RequestMethod.GET)
 	public ResponseEntity<User> get(@PathVariable long userId){
 		User user = new User();
-		
+		/*
+		LOGGER.trace("getPacienteDTO >> authorizationHeader : {}", authorizationHeader);
+		LOGGER.trace("getPacienteDTO >> pacienteBusqueda : {}", pacienteBusqueda);		
+		String tokenUUID = extraerToken(authorizationHeader);
+		List<PacienteSanitasDTO> listaPacientes = pacienteCtrlService.get(tokenUUID, pacienteBusqueda);
+		LOGGER.trace("getPacienteDTO << listaPacientes : {}", listaPacientes);
+		return new ResponseEntity<List<PacienteSanitasDTO>>(listaPacientes, HttpStatus.OK);
+		*/	
 		return ResponseEntity.ok(user);
 	}
 	
@@ -49,12 +60,9 @@ public class UsersController {
 	}	
 		
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<User> save(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestBody User user){
-		User createdUser = new User();		
-		createdUser.setId(2L);
-		createdUser.setName("New User");
-		
-		
+	public ResponseEntity<User> save(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestBody User user){			
+		String tokenUUID = extraerToken(authorizationHeader);
+		User createdUser = userCtrlService.save(tokenUUID, user);		
 		return ResponseEntity.ok(createdUser);
 	}
 	
