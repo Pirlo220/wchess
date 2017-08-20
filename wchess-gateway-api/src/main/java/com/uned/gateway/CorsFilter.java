@@ -32,7 +32,7 @@ import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
  * This implementation has a dependency on EHCache API because<br/>
  * it use Caching for blacklisted client IP in order to enhance performance.
  * 
- * Assume here that all CORS resources are grouped in context path "/cors/".
+ * Trying out instructions from https://www.owasp.org/index.php/CORS_OriginHeaderScrutiny
  * 
  */
 @Component
