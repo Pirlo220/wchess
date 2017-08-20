@@ -97,14 +97,6 @@ public class GatewayController {
 		headersRequestTransformer.setPredecessor(contentRequestTransformer);
 		contentRequestTransformer.setPredecessor(urlRequestTransformer);
 		HttpUriRequest u = headersRequestTransformer.transform(request).build();
-		Enumeration<String> headerNames = request.getHeaderNames();
-		while (headerNames.hasMoreElements()) {			
-			String headerName = headerNames.nextElement();
-			String headerValue = request.getHeader(headerName);
-			if(u.getFirstHeader(headerName) == null && !headerName.equals("Content-Length")) {
-				u.setHeader(headerName, headerValue);
-			}			
-		}		
 		return u;
 	}
 
