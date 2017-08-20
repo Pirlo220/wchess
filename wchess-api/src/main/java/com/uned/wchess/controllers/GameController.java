@@ -62,12 +62,12 @@ public class GameController {
 	}
 		
 	@RequestMapping(method=RequestMethod.POST)
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Game> handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return ResponseEntity.ok(new Game());
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

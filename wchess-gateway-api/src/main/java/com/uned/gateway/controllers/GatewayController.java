@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+
+import java.util.Enumeration;
 import java.util.stream.Collectors;
 import com.uned.gateway.ApiGatewayProperties;
 import com.uned.gateway.services.DecisionPointService;
@@ -95,7 +97,14 @@ public class GatewayController {
 		headersRequestTransformer.setPredecessor(contentRequestTransformer);
 		contentRequestTransformer.setPredecessor(urlRequestTransformer);
 		HttpUriRequest u = headersRequestTransformer.transform(request).build();
-		u.setHeader("Authorization",request.getHeader("Authorization"));
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {			
+			String headerName = headerNames.nextElement();
+			String headerValue = request.getHeader(headerName);
+			if(u.getFirstHeader(headerName) == null && !headerName.equals("Content-Length")) {
+				u.setHeader(headerName, headerValue);
+			}			
+		}		
 		return u;
 	}
 
