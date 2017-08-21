@@ -1,5 +1,8 @@
 package com.uned.wchess.controllers;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +68,24 @@ public class GameController {
 		
 	@RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Game> handleFileUpload(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestParam("file") MultipartFile file) {        
-        gameCtrlService.upload(extraerToken(authorizationHeader), file);
+        try {
+			gameCtrlService.upload(extraerToken(authorizationHeader), file);
+		} catch (NoSuchAlgorithmException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return ResponseEntity.ok(new Game());
     }
+		
+	@RequestMapping(path="download/{gameId}", method=RequestMethod.POST)
+	public void getFile(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestBody Game game) {
+	    try {
+			gameCtrlService.download(extraerToken(authorizationHeader), game);
+		} catch (NoSuchAlgorithmException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

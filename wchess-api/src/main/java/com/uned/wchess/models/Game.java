@@ -8,6 +8,7 @@ public class Game {
 	private Date datedOn;
 	private User owner;
 	private long views;
+	private String hash;
 	
 	public Game() {
 		this.id = -1;
@@ -43,9 +44,17 @@ public class Game {
 	public void setViews(long views) {
 		this.views = views;
 	}
+	public String getHash() {
+		// TODO Auto-generated method stub
+		return hash;
+	}
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+	
 	@Override
 	public String toString() {
-		return "Game [id=" + id + ", createdOn=" + createdOn + ", datedOn=" + datedOn + ", owner=" + owner + ", views="
+		return "Game [id=" + id + ", createdOn=" + createdOn + ", datedOn=" + datedOn + ", owner=" + owner.getId() + ", views="
 				+ views + "]";
 	}
 }

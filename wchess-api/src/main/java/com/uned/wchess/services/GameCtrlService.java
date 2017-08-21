@@ -1,5 +1,7 @@
 package com.uned.wchess.services;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -12,5 +14,6 @@ public interface GameCtrlService {
 	List<Game> get(String tokenUUID, GameSearchModel game);
 	void delete(String tokenUUID, Game game);
 	Game update(String tokenUUID, Game game);
-	void upload(String tokenUUID, MultipartFile file);
+	void upload(String tokenUUID, MultipartFile file) throws NoSuchAlgorithmException, IOException;
+	void download(String tokenUUID, Game game) throws NoSuchAlgorithmException, IOException;
 }
