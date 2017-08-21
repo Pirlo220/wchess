@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+
+import java.util.Enumeration;
 import java.util.stream.Collectors;
 import com.uned.gateway.ApiGatewayProperties;
 import com.uned.gateway.services.DecisionPointService;
@@ -94,8 +96,8 @@ public class GatewayController {
 		HeadersRequestTransformer headersRequestTransformer = new HeadersRequestTransformer();
 		headersRequestTransformer.setPredecessor(contentRequestTransformer);
 		contentRequestTransformer.setPredecessor(urlRequestTransformer);
-
-		return headersRequestTransformer.transform(request).build();
+		HttpUriRequest u = headersRequestTransformer.transform(request).build();
+		return u;
 	}
 
 	private String read(InputStream input) throws IOException {

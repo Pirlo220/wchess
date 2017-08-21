@@ -1,3 +1,66 @@
+/*
+
+User-Agent: Fiddler
+Authorization: Bearer 11111
+Host: localhost:8080
+Origin: http://localhost
+Content-Length: 0
+
+
+
+*/
+$(document).ready(init2);
+
+function init2(){
+    $.ajax(
+          {type : "GET",
+		   url:"http://localhost:8080/api/users",
+           headers : {"Authorization" : "Bearer " + authzSession.accessToken},
+           contentType : "application/json;charset=UTF-8",
+           //data : requestTxt,
+           dataType : "json",
+           success : updateScreen,
+           error : handleAuthzSessionHttpError});
+}
+
+function updateScreen(users){
+ users.forEach(function(user) {
+ //    var node = "<div>" + user.name + "</div>" ;
+   //document.getElementById("myDiv").appendChild(node);
+     //var para = document.createElement("div");                       // Create a <p> node
+//var t = document.createTextNode(user.name);      // Create a text node
+  //   para.appendChild(t);  
+//document.getElementById("myDiv").appendChild(t);
+  // document.getElementById("myDiv").innerHTML = "<div><a href='www.google.com'>a</></div>" ;
+     var divElement = $('<div id="userFile" />').text(user.name);
+     $('body').append(divElement);//'<div id="test">test</div><div id="afterAjax" style="display:none">'+ user.name+'</div>')
+});
+// document.getElementById("myDiv").innerHTML = "<script type='text/javascript'>alert('test');</script>";//message[0].name;
+}
+
+
+
+$("input:file").change(function(objEvent) {
+   var data = new FormData(document.getElementById("yourFormID")); // your form ID
+var url = jQuery("#yourFormID").attr("action"); // your form action 
+$.ajax({
+    url: "http://localhost:8080/api/game",
+    headers : {"Authorization" : "Bearer " + authzSession.accessToken},
+    type: "POST",
+    data: data, // this will get all the input fields of your form.
+    //enctype: 'multipart/form-data',
+    processData: false,  // tell jQuery not to process the data
+    contentType: false,   // tell jQuery not to set contentType
+    dataType: 'json', // as you want
+    success: function(response) {        
+        alert('Success!!') 
+    },
+    error: function(er){
+        alert(er);
+    }
+});
+});
+
 //http://docs.identityserver.io/en/release/quickstarts/7_javascript_client.html#refjavascriptquickstart
 /*
 function log() {
@@ -107,7 +170,6 @@ subject.email;
 // ready, the Connect2id server will ask the front-end to relay it back to the
 // client (typically via a 302 HTTP redirect). For more information see 
 // http://connect2id.com/products/server/docs/integration/authz-session#authz-sessions-post
-$(document).ready(init);
 
 function init() {
 
@@ -149,7 +211,7 @@ function init() {
 var requestTxt = {
 	query : JSON.stringify(config, null, 4)
 };
-debugger;
+
    /* $.ajax({
            type : "POST",
 		   url:authzSession.baseURL,
@@ -183,7 +245,7 @@ $.ajax({
 function switchAction(c2idServerResponse) {
 
     // Save the authorisation session ID if set
-	debugger;
+	
     if (c2idServerResponse.sid) {
         authzSession.id = c2idServerResponse.sid;
         log("Started Connect2id authorisation session with ID " + authzSession.id);
