@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.uned.wchess.dao.UsersRepository;
 import com.uned.wchess.exceptions.NotValidEmailException;
 import com.uned.wchess.exceptions.NotValidPasswordException;
 import com.uned.wchess.exceptions.NotValidUserNameException;
@@ -14,8 +16,10 @@ import com.uned.wchess.search.UserSearchModel;
 
 @Component
 public class UserCtrlServiceImpl implements UserCtrlService {
-	private final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-			Pattern.CASE_INSENSITIVE);
+	@Autowired
+	private UsersRepository usersRepoBD;
+	
+	private final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);	
 
 	@Override
 	public List<User> get(String tokenUUID, UserSearchModel searchModel) {
@@ -31,7 +35,7 @@ public class UserCtrlServiceImpl implements UserCtrlService {
 		 * LOGGER.trace("getPacientes << tokenUUID :: {}, resultado :: {} ", tokenUUID,
 		 * pacientesSanitasDTO); return pacientesSanitasDTO;
 		 */
-		return null;
+		return usersRepoBD.getUsers(searchModel.criteria());		
 	}
 
 	@Override
@@ -60,9 +64,9 @@ public class UserCtrlServiceImpl implements UserCtrlService {
 		Boolean isValid = true;
 		isValidEmail(user.getEmail());
 		isValidUserName(user.getUsername());
-		if(validatePassword) {
+		/*if(validatePassword) {
 			isValidPassword(user.getPassword());
-		}
+		}*/
 		return isValid;
 	}
 

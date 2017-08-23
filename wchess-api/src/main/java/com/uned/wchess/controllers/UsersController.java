@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ import com.uned.wchess.api.ErrorAPI;
 import com.uned.wchess.exceptions.AccesoNoAutorizadoException;
 import com.uned.wchess.exceptions.AuthorizationHeaderException;
 import com.uned.wchess.models.User;
+import com.uned.wchess.search.UserSearchModel;
 import com.uned.wchess.services.UserCtrlService;
 
 @RestController
@@ -57,8 +59,20 @@ public class UsersController {
 	public ResponseEntity<List<User>> getAll(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader){
 		List<User> users = new ArrayList<User>();
 		return ResponseEntity.ok(users);
+	}
+	
+	@RequestMapping(value="/criteria", method=RequestMethod.GET)
+	public ResponseEntity<List<User>> getByCriteria(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader,
+			@RequestParam (value = "ids", defaultValue = "", required = false) String ids, 
+			@RequestParam (value = "username", defaultValue = "", required = false) String username, 
+			@RequestParam (value = "email", defaultValue = "", required = false) String email, 
+			@RequestParam (value = "name", defaultValue = "", required = false) String name, 
+			@RequestParam (value = "surname", defaultValue = "", required = false) String surname){
+		UserSearchModel searchModel = createUserSearchModel(ids, username, email, name, surname);
+		List<User> users = userCtrlService.get(extraerToken(authorizationHeader), searchModel);
+		return ResponseEntity.ok(users);
 	}	
-		
+
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<User> save(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestBody User user){			
 		String tokenUUID = extraerToken(authorizationHeader);
@@ -88,6 +102,36 @@ public class UsersController {
 		}
 	}
 	
+	private UserSearchModel createUserSearchModel(String ids, String username, String email, String name, String surname) {
+		UserSearchModel searchModel = new UserSearchModel();
+		if(ids != null && !ids.isEmpty()) {
+			List<Long> userIDs = getIdsFromString(ids);
+			searchModel.setIds(userIDs);
+		}
+		
+		if(username != null && !username.isEmpty()) {
+			searchModel.setUsername(username);
+		}
+		
+		if(name != null && !name.isEmpty()) {
+			searchModel.setName(name);
+		}
+		
+		if(surname != null && !surname.isEmpty()) {
+			searchModel.setSurname(surname);
+		}
+		return searchModel;
+	}
+	
+	private List<Long> getIdsFromString(String ids) {
+		String[] idsSeparated = ids.split(",");
+		List<Long> userIDs = new ArrayList<Long>();
+		for(String id : idsSeparated) {
+			userIDs.add(Long.parseLong(id));
+		}
+		return userIDs;
+	}
+
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {

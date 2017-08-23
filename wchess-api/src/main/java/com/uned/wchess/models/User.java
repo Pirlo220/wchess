@@ -6,10 +6,11 @@ public class User {
 	private String email;
 	private String name;
 	private String surname;
-	private String password;
+	private int elo;	
 	
 	public User() {
 		this.id = -1;
+		this.elo = 1200;
 	}
 	
 	public long getId() {
@@ -42,12 +43,13 @@ public class User {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public String getPassword() {
-		return password;
+	public int getElo() {
+		return elo;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setElo(int elo) {
+		this.elo = elo;
 	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + "]";
