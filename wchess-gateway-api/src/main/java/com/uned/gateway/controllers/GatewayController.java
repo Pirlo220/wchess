@@ -97,6 +97,7 @@ public class GatewayController {
 		headersRequestTransformer.setPredecessor(contentRequestTransformer);
 		contentRequestTransformer.setPredecessor(urlRequestTransformer);
 		HttpUriRequest u = headersRequestTransformer.transform(request).build();
+		u.addHeader("Authorization", request.getHeader("Authorization"));
 		return u;
 	}
 
