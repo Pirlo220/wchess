@@ -1,5 +1,7 @@
 package com.uned.wchess.dao;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ public class UsersRepoBD extends JdbcDaoSupport implements UsersRepository {
 	public static final String USERS_COLUMN_ELO = "user_elo";
 
 	private final String GET_USERS = "SELECT users.id AS user_id, " + "users.username AS user_username, "
-			+ "users.email AS user_email, " + "users.name AS user_name, " + "users.surname AS user_surname "
+			+ "users.email AS user_email, " + "users.name AS user_name, " + "users.surname AS user_surname, "
 			+ "users.elo AS user_elo "
 			+ "FROM users WHERE 1 = 1 ";
 
@@ -61,7 +63,12 @@ public class UsersRepoBD extends JdbcDaoSupport implements UsersRepository {
 			paramMap.addValue("user_surname", "%" + criteria.get("user_surname") + "%");
 			query += CRITERIA_SURNAME;
 		}
-		List<User> users = jdbcTemplate.query(query, paramMap, usersRsExtractor);
+		List<User> users = new ArrayList<User>();
+		try {
+			 jdbcTemplate.query(query, paramMap, usersRsExtractor);
+		}catch(Exception e) {
+			String ee = "";
+		}
 		return users;
 	}
 
