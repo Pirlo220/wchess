@@ -22,5 +22,5 @@ ALTER TABLE users
   OWNER TO seguridad;
 
   
-INSERT INTO users(id, username, email, name, surname, password) VALUES (1, 'test', 'test@gem.com', 'John', 'Doe', 'sdfsad5fsda5fsad5', 1200);
-INSERT INTO users(id, username, email, name, surname, password) VALUES (2, 'test2', 'test2@gem.com', 'Jane', 'Doe', 'adfdddddd', 1650);
+INSERT INTO users(id, username, email, name, surname, password, elo) VALUES (1, 'test', 'test@gem.com', 'John', 'Doe', 'sdfsad5fsda5fsad5', 1200);
+INSERT INTO users(id, username, email, name, surname, password, elo) VALUES (2, 'test2', 'test2@gem.com', 'Jane', 'Doe', 'adfdddddd', 1650);
