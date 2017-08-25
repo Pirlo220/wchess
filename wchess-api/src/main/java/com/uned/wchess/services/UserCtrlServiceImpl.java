@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +20,7 @@ import com.uned.wchess.search.UserSearchModel;
 public class UserCtrlServiceImpl implements UserCtrlService {
 	@Autowired
 	private UsersRepository usersRepoBD;
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserCtrlServiceImpl.class);
 	private final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);	
 
 	@Override
