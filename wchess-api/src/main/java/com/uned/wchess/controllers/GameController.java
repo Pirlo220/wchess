@@ -71,7 +71,7 @@ public class GameController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Game> handleFileUpload(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestParam("file") MultipartFile file) {
+	public ResponseEntity<Game> uploadFile(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestParam("file") MultipartFile file) {
 		try {
 			gameCtrlService.upload(extraerToken(authorizationHeader), file);
 		} catch (NoSuchAlgorithmException | IOException e) {
@@ -82,15 +82,15 @@ public class GameController {
 	}
 
 	@RequestMapping(path = "download/{gameId}", method = RequestMethod.POST)
-	public void getFile(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestBody Game game) {
+	public void downloadFile(@RequestHeader(value = "Authorization", defaultValue = "", required = false) String authorizationHeader, @RequestBody Game game) {
 		try {
 			gameCtrlService.download(extraerToken(authorizationHeader), game);
 		} catch (NoSuchAlgorithmException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
+	}	
+	
 	@ExceptionHandler(StorageFileNotFoundException.class)
 	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
 		return ResponseEntity.notFound().build();
